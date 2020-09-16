@@ -1,0 +1,102 @@
+:root {
+    --primary-color: #17a2b8;
+    --dark-color: #343a40;
+    --light-color: #f4f4f4;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+}
+
+body {
+    min-height: 100%;
+}
+
+/* Landing */
+#landing {
+    background: url('./img/priscilla-du-preez-XkKCui44iM0-unsplash.jpg') rgba(17, 17, 17, 0.3) no-repeat center center/cover;
+    background-blend-mode: multiply;
+    padding-top: 14rem;
+    height: 100vh;
+}
+
+#landing .ui.header {
+    font-size: 4em;
+}
+
+#landing h5 {
+    font-size: 1.7em;
+    color: rgb(71, 177, 71);
+}
+
+#landing button {
+    font-size: 1.4em;
+}
+
+/* Register */
+#register, #login {
+    padding-top: 5rem;
+}
+.column {
+    max-width: 450px;
+}
+
+.header h2 {
+    font-size: 1.7rem;
+}
+
+
+.ui.large.form {
+    font-size: 1.14rem;
+}
+
+/* Alert */
+
+.alert {
+    padding: 0.8rem;
+    margin: 1rem 0;
+    opacity: 0.9;
+    background: var(--light-color);
+    color: #333;
+}
+
+.alert-primary {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.alert-light {
+    background: var(--light-color);
+    color: #333;
+}
+
+.alert-dark {
+    background: var(--dark-color);
+    color: #fff;
+}
+
+.alert-danger {
+    background: var(--danger-color);
+    color: #fff;
+}
+
+.alert-success {
+    background: var(--success-color);
+    color: #fff;
+}
+
+.alert-white {
+    background: #fff;
+    color: #333;
+    border: #ccc solid 1px;
+}
+
+.posts, .textform {
+    padding: 50px 0px;
+}
+
+.headings {
+    padding: 20px 0px;
+}
+
+.actionbuttons {
+    padding-left: 20px;
+}
