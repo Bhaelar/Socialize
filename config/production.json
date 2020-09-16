@@ -1,0 +1,9 @@
+{
+    "mongoURI": "mongodb+srv://bhaelar:basit2000@cluster0.acsoc.mongodb.net/Social-Media-App?retryWrites=true&w=majority",
+    "jwtSecret": "mySecretToken",
+    "email": "akoredeokenla@gmail.com",
+    "password": "basit2000",
+    "cloud_name": "dxjqyiczd",
+    "api_key": "145858949835375",
+    "api_secret": "qTgfuDehif_BNvCxkZwfmKydiJY"
+}
