@@ -13,7 +13,7 @@ export const openUploadWidget = (options, callback) => {
 
 export async function  fetchPhotos (imageTag, setter)  {
   const options = {
-  cloudName: 'dxjqyiczd',
+  cloudName: `${process.env.REACT_APP_CLOUD_NAME}`,
   format: 'json',
   type: 'list',
   version: Math.ceil(new Date().getTime() / 1000),
