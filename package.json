@@ -1,0 +1,37 @@
+{
+  "name": "social-media-app",
+  "version": "1.0.0",
+  "description": "A social media application to connect with peers",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "Okenla Abdul-Basit",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cloudinary": "^1.22.0",
+    "config": "^3.3.1",
+    "crypto-js": "^4.0.0",
+    "datauri": "^3.0.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.26",
+    "multer": "^1.4.2",
+    "multer-gridfs-storage": "^4.2.0",
+    "multer-storage-cloudinary": "^4.0.0",
+    "nanoid": "^3.1.12",
+    "nodemailer": "^6.4.11",
+    "normalize-url": "^5.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.4"
+  }
+}
