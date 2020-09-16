@@ -92,7 +92,7 @@ export const addPost = ({ title, text }, history) => async dispatch => {
       type: ADD_POST,
       payload: res.data
     });
-    history.push('/profile/me');
+    history.push('/home');
     dispatch(setAlert('Post Created', 'success'));
   } catch (err) {
     dispatch({
