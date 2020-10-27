@@ -33,7 +33,10 @@ export default function (state = initialState, action) {
       return {
         ...state,
         profile: null,
-        repos: []
+        token: null,
+        isAuthenticated: false,
+        loading: false,
+        user: null
       };
     default:
       return state;
