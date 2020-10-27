@@ -72,7 +72,7 @@ router.post(
 						}
 					});
 					let mailOptions = {
-						from: 'no-reply@yourwebapplication.com',
+						from: 'no-reply@socialize.com',
 						to: user.email,
 						subject: 'Account Verification Token',
 						text:
@@ -155,7 +155,7 @@ router.post('/verify', [ check('email', 'Please include a valid email').isEmail(
 		return res.status(400).json({ errors: errors.array() });
 	}
 
-	let user = await User.findOne(req.body.email);
+	let user = await User.findOne({email: req.body.email});
 	// Create verification token
 	let token = await Token.findOne({ _userId: user.id });
 	if (token) {
@@ -168,7 +168,7 @@ router.post('/verify', [ check('email', 'Please include a valid email').isEmail(
 			}
 		});
 		let mailOptions = {
-			from: 'no-reply@yourwebapplication.com',
+			from: 'no-reply@socialize.com',
 			to: user.email,
 			subject: 'Account Verification Token',
 			text:
@@ -203,7 +203,7 @@ router.post('/verify', [ check('email', 'Please include a valid email').isEmail(
 				}
 			});
 			let mailOptions = {
-				from: 'no-reply@yourwebapplication.com',
+				from: 'no-reply@socialize.com',
 				to: user.email,
 				subject: 'Account Verification Token',
 				text:

@@ -14,7 +14,7 @@ const MyProfile = ({ getCurrentProfile, deleteAccount, auth: { user }, profile: 
 		[ getCurrentProfile ]
 	);
 
-	return loading || profile === null ? (
+	return loading === null ? (
 		<Spinner />
 	) : (
 		<Fragment>

@@ -12,8 +12,6 @@ const path = require('path');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
 
-
-
 // @route    GET api/profile/me
 // @desc     Get current user's profile
 // @access   Private
@@ -70,9 +68,12 @@ router.post(
 
 			let profileuser = await Profile.findOne({ user: user.id });
 
-			if (!name.user.equals(profileuser.user)) {
-				return res.status(400).json({ errors: [ { msg: 'Username already taken' } ] });
+			if (name && profileuser) {
+				if (!name.user.equals(profileuser.user)) {
+					return res.status(400).json({ errors: [ { msg: 'Username already taken' } ] });
+				}
 			}
+
 			// Using upsert option (creates new doc if no match is found):
 			let profile = await Profile.findOneAndUpdate(
 				{ user: req.user.id },
@@ -107,14 +108,14 @@ router.post('/upload', auth, async (req, res) => {
 		res.status(500).send('Server Error');
 	}) */
 	// Frontend upload logic
-	const {image} = req.body;
+	const { image } = req.body;
 	try {
-		let profile = await Profile.findOneAndUpdate({ user: req.user.id }, { avatar: image }, {new: true});
+		let profile = await Profile.findOneAndUpdate({ user: req.user.id }, { avatar: image }, { new: true });
 		res.json(profile);
 	} catch (err) {
-			console.error(err.message);
-			res.status(500).send('Server Error');
-		}
+		console.error(err.message);
+		res.status(500).send('Server Error');
+	}
 });
 
 // @route    GET api/profile
