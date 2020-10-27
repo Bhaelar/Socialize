@@ -19,7 +19,7 @@ var _require = require('express-validator'),
 var _require2 = require('nanoid'),
     nanoid = _require2.nanoid;
 
-var nodemailer = require('nodemailer');
+var mail = require('../../middleware/nodemailer');
 
 var User = require('../../models/User');
 
@@ -136,31 +136,10 @@ router.post('/', [check('email', 'Please include a valid email').isEmail(), chec
               return res.status(500).send({
                 msg: err.message
               });
-            } // Send the email
+            } // Send verification email
 
 
-            var transport = nodemailer.createTransport({
-              service: 'gmail',
-              auth: {
-                user: config.get('email'),
-                //replace with your email
-                pass: config.get('password') //replace with your password
-
-              }
-            });
-            var mailOptions = {
-              from: 'no-reply@socialize.com',
-              to: user.email,
-              subject: 'Account Verification Token',
-              text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp://' + req.headers.host + '/api/auth/confirmation/' + token.token + '.\n'
-            };
-            transport.sendMail(mailOptions, function (error, info) {
-              if (error) {
-                return console.log(error);
-              }
-
-              console.log('Message sent: %s', info.messageId);
-            });
+            mail.sendEmail(req, user, token);
           });
           return _context2.abrupt("return", res.status(400).json({
             errors: [{
@@ -270,7 +249,7 @@ router.get('/confirmation/:token', function _callee3(req, res) {
 // @access   Private
 
 router.post('/verify', [check('email', 'Please include a valid email').isEmail()], function _callee4(req, res) {
-  var errors, user, token, transport, mailOptions;
+  var errors, user, token;
   return regeneratorRuntime.async(function _callee4$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
@@ -305,29 +284,7 @@ router.post('/verify', [check('email', 'Please include a valid email').isEmail()
 
           if (token) {
             // Send the email
-            transport = nodemailer.createTransport({
-              service: 'gmail',
-              auth: {
-                user: config.get('email'),
-                //replace with your email
-                pass: config.get('password') //replace with your password
-
-              }
-            });
-            mailOptions = {
-              from: 'no-reply@socialize.com',
-              to: user.email,
-              subject: 'Account Verification Token',
-              text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp://' + req.headers.host + '/api/auth/confirmation/' + token.token + '.\n'
-            };
-            transport.sendMail(mailOptions, function (error, info) {
-              if (error) {
-                return console.log(error);
-              }
-
-              res.status(200).send('Verification token has been sent');
-              console.log('Message sent: %s', info.messageId);
-            });
+            sendEmail();
           } else {
             token = new Token({
               _userId: user.id,
@@ -341,29 +298,7 @@ router.post('/verify', [check('email', 'Please include a valid email').isEmail()
               } // Send the email
 
 
-              var transport = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                  user: config.get('email'),
-                  //replace with your email
-                  pass: config.get('password') //replace with your password
-
-                }
-              });
-              var mailOptions = {
-                from: 'no-reply@socialize.com',
-                to: user.email,
-                subject: 'Account Verification Token',
-                text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp://' + req.headers.host + '/api/auth/confirmation/' + token.token + '.\n'
-              };
-              transport.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                  return console.log(error);
-                }
-
-                res.status(200).send('Verification token has been sent');
-                console.log('Message sent: %s', info.messageId);
-              });
+              mail.sendEmail(req, user, token);
             });
           }
 

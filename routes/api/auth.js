@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
 const { nanoid } = require('nanoid');
-const nodemailer = require('nodemailer');
+const mail = require('../../middleware/nodemailer');
 
 const User = require('../../models/User');
 const Token = require('../../models/Token');
@@ -63,35 +63,16 @@ router.post(
 						return res.status(500).send({ msg: err.message });
 					}
 
-					// Send the email
-					let transport = nodemailer.createTransport({
-						service: 'gmail',
-						auth: {
-							user: config.get('email'), //replace with your email
-							pass: config.get('password') //replace with your password
-						}
-					});
-					let mailOptions = {
-						from: 'no-reply@socialize.com',
-						to: user.email,
-						subject: 'Account Verification Token',
-						text:
-							'Hello,\n\n' +
-							'Please verify your account by clicking the link: \nhttp://' +
-							req.headers.host +
-							'/api/auth/confirmation/' +
-							token.token +
-							'.\n'
-					};
-					transport.sendMail(mailOptions, (error, info) => {
-						if (error) {
-							return console.log(error);
-						}
-						console.log('Message sent: %s', info.messageId);
-					});
+					// Send verification email
+					mail.sendEmail(req, user, token);
 				});
 				return res.status(400).json({
-					errors: [ { msg: 'You have to be verified in order to login. Please check your email to confirm verification' } ]
+					errors: [
+						{
+							msg:
+								'You have to be verified in order to login. Please check your email to confirm verification'
+						}
+					]
 				});
 			}
 
@@ -155,37 +136,12 @@ router.post('/verify', [ check('email', 'Please include a valid email').isEmail(
 		return res.status(400).json({ errors: errors.array() });
 	}
 
-	let user = await User.findOne({email: req.body.email});
+	let user = await User.findOne({ email: req.body.email });
 	// Create verification token
 	let token = await Token.findOne({ _userId: user.id });
 	if (token) {
 		// Send the email
-		let transport = nodemailer.createTransport({
-			service: 'gmail',
-			auth: {
-				user: config.get('email'), //replace with your email
-				pass: config.get('password') //replace with your password
-			}
-		});
-		let mailOptions = {
-			from: 'no-reply@socialize.com',
-			to: user.email,
-			subject: 'Account Verification Token',
-			text:
-				'Hello,\n\n' +
-				'Please verify your account by clicking the link: \nhttp://' +
-				req.headers.host +
-				'/api/auth/confirmation/' +
-				token.token +
-				'.\n'
-		};
-		transport.sendMail(mailOptions, (error, info) => {
-			if (error) {
-				return console.log(error);
-			}
-			res.status(200).send('Verification token has been sent');
-			console.log('Message sent: %s', info.messageId);
-		});
+		sendEmail();
 	} else {
 		token = new Token({ _userId: user.id, token: nanoid(16) });
 
@@ -195,32 +151,7 @@ router.post('/verify', [ check('email', 'Please include a valid email').isEmail(
 			}
 
 			// Send the email
-			let transport = nodemailer.createTransport({
-				service: 'gmail',
-				auth: {
-					user: config.get('email'), //replace with your email
-					pass: config.get('password') //replace with your password
-				}
-			});
-			let mailOptions = {
-				from: 'no-reply@socialize.com',
-				to: user.email,
-				subject: 'Account Verification Token',
-				text:
-					'Hello,\n\n' +
-					'Please verify your account by clicking the link: \nhttp://' +
-					req.headers.host +
-					'/api/auth/confirmation/' +
-					token.token +
-					'.\n'
-			};
-			transport.sendMail(mailOptions, (error, info) => {
-				if (error) {
-					return console.log(error);
-				}
-				res.status(200).send('Verification token has been sent');
-				console.log('Message sent: %s', info.messageId);
-			});
+			mail.sendEmail(req, user, token);
 		});
 	}
 });

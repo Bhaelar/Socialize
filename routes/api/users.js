@@ -2,10 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const brcypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
 const { nanoid } = require('nanoid');
-const nodemailer = require('nodemailer');
+const mail = require('../../middleware/nodemailer');
 
 const User = require('../../models/User');
 const Token = require('../../models/Token');
@@ -59,31 +57,7 @@ router.post(
 				}
 
 				// Send the email
-				let transport = nodemailer.createTransport({
-					service: 'gmail',
-					auth: {
-						user: config.get('email'), //replace with your email
-						pass: config.get('password') //replace with your password
-					}
-				});
-				let mailOptions = {
-					from: 'no-reply@yourwebapplication.com',
-					to: user.email,
-					subject: 'Account Verification Token',
-					text:
-						'Hello,\n\n' +
-						'Please verify your account by clicking the link: \nhttp://' +
-						req.headers.host +
-						'/api/auth/confirmation/' +
-						token.token +
-						'.\n'
-				};
-				transport.sendMail(mailOptions, (error, info) => {
-					if (error) {
-						return console.log(error);
-					}
-					console.log('Message sent: %s', info.messageId);
-				});
+				mail.sendEmail(req, user, token);
 			});
 		} catch (err) {
 			console.error(err.message);

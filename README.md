@@ -11,7 +11,10 @@ A social media application where users can share thoughts, interact and socializ
     "password": "<email_password>",
     "cloud_name": "<cloudinary_cloud_name>",
     "api_key": "<cloudinary_api_key>",
-    "api_secret": "<cloudinary_api_secret>"
+    "api_secret": "<cloudinary_api_secret>",
+    "ClientID": "<oauth_client_id>",
+    "Client_secret": "<oauth_client_secret>",
+    "refresh_token": "<oauth_refresh_token>"
 }
 ```
 
